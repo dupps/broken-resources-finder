@@ -6,13 +6,15 @@ let activeTab;
 
 function logURL(requestDetails) {
 
-    if (requestDetails.statusCode >= 400) {
+    let status = requestDetails.statusCode;
+
+    if (status >= 400) {
 
         let url = requestDetails.url;
         let reason = requestDetails.statusLine;
         let tabId = requestDetails.tabId;
 
-        handleBrokenResource(url, reason, tabId);
+        handleBrokenResource(url, status, reason, tabId);
     }
 }
 
@@ -25,9 +27,10 @@ function logError(requestDetails) {
     handleBrokenResource(url, reason, tabId)
 }
 
-function handleBrokenResource(url, reason, tabId) {
+function handleBrokenResource(url, status, reason, tabId) {
 
     console.debug("Loading: " + url);
+    console.debug("Status: " + status);
     console.debug("Reason: " + reason);
     console.debug("TabId: " + tabId);
 
@@ -41,6 +44,7 @@ function handleBrokenResource(url, reason, tabId) {
 
     brokenResources.push({
         url: url,
+        status: status,
         reason: reason
     });
 }
