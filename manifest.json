@@ -22,7 +22,7 @@
   },
   "background": {
     "scripts": [
-      "background_scripts/background.js"
+      "background_scripts/resource_checker.js"
     ]
   }
 }
