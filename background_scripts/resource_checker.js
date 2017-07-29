@@ -74,13 +74,16 @@ function handleActivated(activeInfo) {
 function handleUpdated(tabId, changeInfo, tabInfo) {
 
     if (changeInfo.status === "loading") {
-        console.log(changeInfo.status);
-        brokenCount.delete(tabId);
-        brokenResources.delete(tabId);
+        clearResources(tabId);
     }
 }
 
 function handleRemoved(tabId, removeInfo) {
+
+    clearResources(tabId);
+}
+
+function clearResources(tabId) {
     brokenCount.delete(tabId);
     brokenResources.delete(tabId);
 }
