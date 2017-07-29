@@ -13,7 +13,7 @@ function handleResponse(response) {
 
     clearPanel();
 
-    if (response.command === "all-broken-resources-response") {
+    if (response.command === "all-broken-resources-response" && response.data) {
 
         response.data.forEach((resource) => createBrokenResourcesListing(resource));
     }
