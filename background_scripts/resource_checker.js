@@ -1,6 +1,6 @@
 'use strict';
 
-let brokenResources = [];
+let brokenResources = new Map();
 let brokenCount = new Map();
 let activeTab;
 
@@ -21,18 +21,14 @@ function logURL(requestDetails) {
 function logError(requestDetails) {
 
     let url = requestDetails.url;
+    let status = requestDetails.status;
     let reason = requestDetails.error;
     let tabId = requestDetails.tabId;
 
-    handleBrokenResource(url, reason, tabId)
+    handleBrokenResource(url, status, reason, tabId)
 }
 
 function handleBrokenResource(url, status, reason, tabId) {
-
-    console.debug("Loading: " + url);
-    console.debug("Status: " + status);
-    console.debug("Reason: " + reason);
-    console.debug("TabId: " + tabId);
 
     if (brokenCount.get(tabId)) {
         brokenCount.set(tabId, brokenCount.get(tabId) + 1)
@@ -42,11 +38,16 @@ function handleBrokenResource(url, status, reason, tabId) {
 
     browser.browserAction.setBadgeText({text: (brokenCount.get(tabId)).toString(), tabId: tabId});
 
-    brokenResources.push({
+    let brokenResource = {
         url: url,
         status: status,
         reason: reason
-    });
+    };
+
+    if (!brokenResources.get(tabId)) {
+        brokenResources.set(tabId, []);
+    }
+    brokenResources.get(tabId).push(brokenResource);
 }
 
 function handleMessage(request, sender, sendResponse) {
@@ -59,7 +60,7 @@ function handleMessage(request, sender, sendResponse) {
 
         sendResponse({
             command: 'all-broken-resources-response',
-            data: brokenResources
+            data: brokenResources.get(activeTab)
         });
 
     } else {
