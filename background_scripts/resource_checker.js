@@ -54,11 +54,8 @@ function logResourceErrors(requestDetails) {
 }
 
 function incrementCounter(tabId, counter) {
-    if (counter.get(tabId)) {
-        counter.set(tabId, counter.get(tabId) + 1)
-    } else {
-        counter.set(tabId, 1)
-    }
+    let oldCount = counter.get(tabId) || 0;
+    counter.set(tabId, ++oldCount)
 }
 
 function handleMessage(request, sender, sendResponse) {
@@ -112,6 +109,7 @@ browser.webRequest.onErrorOccurred.addListener(
     logResourceErrors,
     {urls: ["<all_urls>"], types: ["image", "stylesheet", "script"]}
 );
+
 
 browser.runtime.onMessage.addListener(handleMessage);
 browser.tabs.onActivated.addListener(handleActivated);
