@@ -1,32 +1,8 @@
-'use strict';
+"use strict";
 
 let brokenResources = new Map();
 let brokenCount = new Map();
 let activeTab;
-
-function logURL(requestDetails) {
-
-    let status = requestDetails.statusCode;
-
-    if (status >= 400) {
-
-        let url = requestDetails.url;
-        let reason = requestDetails.statusLine;
-        let tabId = requestDetails.tabId;
-
-        handleBrokenResource(url, status, reason, tabId);
-    }
-}
-
-function logError(requestDetails) {
-
-    let url = requestDetails.url;
-    let status = requestDetails.status;
-    let reason = requestDetails.error;
-    let tabId = requestDetails.tabId;
-
-    handleBrokenResource(url, status, reason, tabId)
-}
 
 function handleBrokenResource(url, status, reason, tabId) {
 
@@ -45,32 +21,52 @@ function handleBrokenResource(url, status, reason, tabId) {
     };
 
     if (!brokenResources.get(tabId)) {
-        brokenResources.set(tabId, []);
+        brokenResources.set(tabId, [])
     }
-    brokenResources.get(tabId).push(brokenResource);
+    brokenResources.get(tabId).push(brokenResource)
+}
+
+function logEmbeddedURLs(requestDetails) {
+
+    let status = requestDetails.statusCode;
+
+    if (status >= 400) {
+
+        let url = requestDetails.url;
+        let reason = requestDetails.statusLine;
+        let tabId = requestDetails.tabId;
+
+        handleBrokenResource(url, status, reason, tabId);
+    }
+}
+
+function logResourceErrors(requestDetails) {
+
+    let url = requestDetails.url;
+    let status = requestDetails.status;
+    let reason = requestDetails.error;
+    let tabId = requestDetails.tabId;
+
+    handleBrokenResource(url, status, reason, tabId);
 }
 
 function handleMessage(request, sender, sendResponse) {
 
     let command = request.command;
 
-    console.log("Command from the popup script: " + command);
-
-    if (command === 'all-broken-resources-request') {
+    if (command === "all-broken-resources-request") {
 
         sendResponse({
-            command: 'all-broken-resources-response',
+            command: "all-broken-resources-response",
             data: brokenResources.get(activeTab)
         });
 
     } else {
-        console.error(`Unknown command: ${command}`);
+        console.error(`Unknown command: ${command}`)
     }
 }
 
 function handleActivated(activeInfo) {
-
-    console.log("Tab " + activeInfo.tabId + " was activated");
 
     activeTab = activeInfo.tabId;
 }
@@ -81,12 +77,12 @@ function handleUpdated(tabId, changeInfo, tabInfo) {
 }
 
 browser.webRequest.onCompleted.addListener(
-    logURL,
+    logEmbeddedURLs,
     {urls: ["<all_urls>"], types: ["image", "stylesheet", "script"]}
 );
 
 browser.webRequest.onErrorOccurred.addListener(
-    logError,
+    logResourceErrors,
     {urls: ["<all_urls>"], types: ["image", "stylesheet", "script"]}
 );
 
