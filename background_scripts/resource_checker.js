@@ -80,6 +80,11 @@ function handleUpdated(tabId, changeInfo, tabInfo) {
     }
 }
 
+function handleRemoved(tabId, removeInfo) {
+    brokenCount.delete(tabId);
+    brokenResources.delete(tabId);
+}
+
 browser.webRequest.onCompleted.addListener(
     logEmbeddedURLs,
     {urls: ["<all_urls>"], types: ["image", "stylesheet", "script"]}
@@ -93,3 +98,4 @@ browser.webRequest.onErrorOccurred.addListener(
 browser.runtime.onMessage.addListener(handleMessage);
 browser.tabs.onActivated.addListener(handleActivated);
 browser.tabs.onUpdated.addListener(handleUpdated);
+browser.tabs.onRemoved.addListener(handleRemoved);
