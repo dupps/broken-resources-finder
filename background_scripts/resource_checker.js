@@ -2,15 +2,12 @@
 
 let brokenResources = new Map();
 let brokenCount = new Map();
+let checkedCount = new Map();
 let activeTab;
 
 function handleBrokenResource(url, status, reason, tabId) {
 
-    if (brokenCount.get(tabId)) {
-        brokenCount.set(tabId, brokenCount.get(tabId) + 1)
-    } else {
-        brokenCount.set(tabId, 1)
-    }
+    incrementCounter(tabId, brokenCount);
 
     browser.browserAction.setBadgeText({text: (brokenCount.get(tabId)).toString(), tabId: tabId});
 
@@ -28,13 +25,15 @@ function handleBrokenResource(url, status, reason, tabId) {
 
 function logEmbeddedURLs(requestDetails) {
 
+    let tabId = requestDetails.tabId;
     let status = requestDetails.statusCode;
+
+    incrementCounter(tabId, checkedCount);
 
     if (status >= 400) {
 
         let url = requestDetails.url;
         let reason = requestDetails.statusLine;
-        let tabId = requestDetails.tabId;
 
         handleBrokenResource(url, status, reason, tabId);
     }
@@ -47,7 +46,16 @@ function logResourceErrors(requestDetails) {
     let reason = requestDetails.error;
     let tabId = requestDetails.tabId;
 
+    incrementCounter(tabId, checkedCount);
     handleBrokenResource(url, status, reason, tabId);
+}
+
+function incrementCounter(tabId, counter) {
+    if (counter.get(tabId)) {
+        counter.set(tabId, counter.get(tabId) + 1)
+    } else {
+        counter.set(tabId, 1)
+    }
 }
 
 function handleMessage(request, sender, sendResponse) {
@@ -58,7 +66,10 @@ function handleMessage(request, sender, sendResponse) {
 
         sendResponse({
             command: "all-broken-resources-response",
-            data: brokenResources.get(activeTab)
+            data: {
+                brokenResources: brokenResources.get(activeTab),
+                checkedCount: checkedCount.get(activeTab)
+            }
         });
 
     } else {

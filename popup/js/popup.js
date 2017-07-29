@@ -15,7 +15,9 @@ function handleResponse(response) {
 
     if (response.command === "all-broken-resources-response" && response.data) {
 
-        response.data.forEach((resource) => createBrokenResourcesListing(resource));
+        response.data.brokenResources.forEach((resource) => createBrokenResourcesListing(resource));
+        document.getElementById("statsCheckedResources").innerText = response.data.checkedCount;
+        document.getElementById("statsHits").innerText = response.data.brokenResources.length;
     }
 }
 
