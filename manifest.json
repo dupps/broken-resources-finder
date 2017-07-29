@@ -1,35 +1,28 @@
 {
   "manifest_version": 2,
-  "name": "Broken Image Finder",
+  "name": "Broken Resources Finder",
   "version": "0.1",
   "author": "Bastian Dupps",
-  "description": "The scope of the Broken Image Finder WebExtension is to detect unavailable images by scanning the currently visited website and its embedded stylesheets.",
-  "homepage_url": "https://github.com/dupps/broken-image-finder",
-  "applications": {
-    "gecko": {
-      "id": "bif@dupps.it"
-    }
-  },
+  "description": "The scope of the Broken Resources Finder WebExtension is to detect unavailable web resources like images or stylesheets by scanning the currently visited website and its embedded stylesheets.",
+  "homepage_url": "https://github.com/dupps/broken-resources-finder",
   "icons": {
     "48": "icons/broken_image_48.png",
     "96": "icons/broken_image_96.png"
   },
   "permissions": [
-    "activeTab"
+    "webRequest",
+    "<all_urls>",
+    "activeTab",
+    "tabs"
   ],
   "browser_action": {
     "default_icon": "icons/broken_image_36.png",
-    "default_title": "Broken Image Finder",
-    "default_popup": "popup/finder_results.html"
+    "default_title": "Broken Resources Finder",
+    "default_popup": "popup/popup.html"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "finder.js"
-      ]
-    }
-  ]
+  "background": {
+    "scripts": [
+      "background_scripts/background.js"
+    ]
+  }
 }
