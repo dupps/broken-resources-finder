@@ -46,14 +46,27 @@ function handleBrokenResource(url, reason, tabId) {
 }
 
 function handleMessage(request, sender, sendResponse) {
-    console.log("Message from the content script: " +
-        request.greeting);
-    sendResponse({response: "Response from background script"});
+
+    let command = request.command;
+
+    console.log("Command from the popup script: " + command);
+
+    if (command === 'all-broken-resources-request') {
+
+        sendResponse({
+            command: 'all-broken-resources-response',
+            data: brokenResources
+        });
+
+    } else {
+        console.error(`Unknown command: ${command}`);
+    }
 }
 
 function handleActivated(activeInfo) {
 
     console.log("Tab " + activeInfo.tabId + " was activated");
+
     activeTab = activeInfo.tabId;
 }
 

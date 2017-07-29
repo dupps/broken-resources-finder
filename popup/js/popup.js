@@ -2,19 +2,25 @@
 
 // todo: options anchor
 
-function notifyPopup() {
+function requestAllBrokenResources() {
     let sending = browser.runtime.sendMessage({
-        greeting: "Greeting from the content script"
+        command: "all-broken-resources-request",
+        data: null
     });
     sending.then(handleResponse, handleError);
 }
 
-function handleResponse(message) {
-    console.log(`Message from the popup script:  ${message.response}`);
+function handleResponse(response) {
+
+    if (response.command === 'all-broken-resources-response') {
+
+        console.log("Got following broken resources:");
+        response.data.forEach(resource => console.log(resource.url));
+    }
 }
 
 function handleError(error) {
     console.log(`Error: ${error}`);
 }
 
-notifyPopup();
+requestAllBrokenResources();
