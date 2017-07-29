@@ -97,6 +97,7 @@ function handleRemoved(tabId, removeInfo) {
 function clearResources(tabId) {
     brokenCount.delete(tabId);
     brokenResources.delete(tabId);
+    checkedCount.delete(tabId);
 }
 
 browser.webRequest.onCompleted.addListener(
