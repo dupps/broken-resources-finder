@@ -42,12 +42,15 @@ function logEmbeddedURLs(requestDetails) {
 function logResourceErrors(requestDetails) {
 
     let url = requestDetails.url;
-    let status = requestDetails.status;
+    let status = requestDetails.error;
     let reason = requestDetails.error;
     let tabId = requestDetails.tabId;
 
-    incrementCounter(tabId, checkedCount);
-    handleBrokenResource(url, status, reason, tabId);
+    if (reason) {
+
+        incrementCounter(tabId, checkedCount);
+        handleBrokenResource(url, status, reason, tabId);
+    }
 }
 
 function incrementCounter(tabId, counter) {
@@ -100,7 +103,7 @@ function clearResources(tabId) {
     checkedCount.delete(tabId);
 }
 
-browser.webRequest.onCompleted.addListener(
+browser.webRequest.onResponseStarted.addListener(
     logEmbeddedURLs,
     {urls: ["<all_urls>"], types: ["image", "stylesheet", "script"]}
 );
