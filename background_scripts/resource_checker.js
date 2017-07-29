@@ -73,7 +73,11 @@ function handleActivated(activeInfo) {
 
 function handleUpdated(tabId, changeInfo, tabInfo) {
 
-    brokenCount.delete(tabId);
+    if (changeInfo.status === "loading") {
+        console.log(changeInfo.status);
+        brokenCount.delete(tabId);
+        brokenResources.delete(tabId);
+    }
 }
 
 browser.webRequest.onCompleted.addListener(
