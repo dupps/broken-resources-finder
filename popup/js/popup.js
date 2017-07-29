@@ -16,6 +16,7 @@ function handleResponse(response) {
     if (response.command === "all-broken-resources-response" && response.data) {
 
         response.data.brokenResources.forEach((resource) => createBrokenResourcesListing(resource));
+
         document.getElementById("statsCheckedResources").innerText = response.data.checkedCount;
         document.getElementById("statsHits").innerText = response.data.brokenResources.length;
     }
@@ -48,8 +49,9 @@ function createBrokenResourcesListing(resource) {
     let urlSpan = document.createElement("span");
     urlSpan.className = "url";
 
-    let resourceName = document.createTextNode(url.substring(url.lastIndexOf("/") + 1, url.length));
-    urlSpan.appendChild(resourceName);
+    let resourceName = url.split('/').pop().split('#')[0].split('?')[0];
+    let resourceNameText = document.createTextNode(resourceName);
+    urlSpan.appendChild(resourceNameText);
 
     let statusSpan = document.createElement("span");
     statusSpan.className = "status error-" + status;
