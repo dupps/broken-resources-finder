@@ -54,6 +54,7 @@ function logResourceErrors(requestDetails) {
 }
 
 function incrementCounter(tabId, counter) {
+
     let oldCount = counter.get(tabId) || 0;
     counter.set(tabId, ++oldCount)
 }
@@ -95,6 +96,7 @@ function handleRemoved(tabId, removeInfo) {
 }
 
 function clearResources(tabId) {
+
     brokenCount.delete(tabId);
     brokenResources.delete(tabId);
     checkedCount.delete(tabId);
@@ -109,7 +111,6 @@ browser.webRequest.onErrorOccurred.addListener(
     logResourceErrors,
     {urls: ["<all_urls>"], types: ["image", "stylesheet", "script"]}
 );
-
 
 browser.runtime.onMessage.addListener(handleMessage);
 browser.tabs.onActivated.addListener(handleActivated);

@@ -3,23 +3,32 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Broken Resources Finder</title>
+    <title>Test page for the Broken Resources Finder WebExtension</title>
     <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="material/material.min.css">
     <link rel="stylesheet" href="css/popup.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 
 <body>
 
-<header>Broken Resources Finder found the following:</header>
+<div class="list-action mdl-card mdl-shadow--2dp">
 
-<div id="stats">
-    <span>checked resources:</span><span id="statsCheckedResources">0</span>
-    <span>hits:</span><span id="statsHits">0</span>
+    <div class="mdl-card__title mdl-card--expand title">
+        <h4 class="mdl-card__title-text">Broken Resources Finder</h4>
+    </div>
+
+    <div id="stats" class="mdl-card__supporting-text">
+        <span>checked resources: </span><span id="statsCheckedResources">0</span>
+        <span>hits: </span><span id="statsHits">0</span>
+    </div>
+
+    <ul class="mdl-list mdl-card__actions mdl-card--border" id="results">
+    </ul>
+
 </div>
 
-<div id="results">
-</div>
-
+<script src="material/material.min.js"></script>
 <script src="js/popup.js"></script>
 </body>
 
