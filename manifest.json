@@ -5,6 +5,11 @@
   "author": "Bastian Dupps",
   "description": "The scope of the Broken Resources Finder WebExtension is to detect unavailable web resources like images or stylesheets by scanning the currently visited website and its embedded stylesheets.",
   "homepage_url": "https://github.com/dupps/broken-resources-finder",
+  "applications": {
+    "gecko": {
+      "id": "broken-resources-finder@dupps.it"
+    }
+  },
   "icons": {
     "48": "icons/broken_image_48.png",
     "96": "icons/broken_image_96.png"
