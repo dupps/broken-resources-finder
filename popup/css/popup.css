@@ -14,6 +14,10 @@
     transition: all 0.8s ease-in-out;
 }
 
+.popup-brand {
+    padding-right: 14px;
+}
+
 .details, .details * {
     height: auto !important;
 }
