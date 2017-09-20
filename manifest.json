@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Broken Resources Finder",
-  "version": "1.0",
+  "version": "1.1",
   "author": "Bastian Dupps",
   "description": "The scope of the Broken Resources Finder WebExtension is to detect unavailable web resources like images or stylesheets by scanning the currently visited website and its embedded stylesheets.",
   "homepage_url": "https://github.com/dupps/broken-resources-finder",
